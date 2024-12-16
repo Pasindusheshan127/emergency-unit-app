@@ -30,7 +30,16 @@ const assignStation = async (req, res) => {
 };
 
 const getassignStation = async (req, res) => {
-  const query = `SELECT * FROM station_assignments  ORDER BY s_id DESC`;
+  const query = `SELECT 
+    e.name AS emergency_name,
+    CONCAT(e.location_latitude, ', ', e.location_longitude) AS emergency_location,
+    e.phone_number,
+    sa.assigned_at
+FROM 
+    emergencies e
+JOIN 
+    station_assignments sa ON e.e_id = sa.emergency_id
+ORDER BY assigned_at`;
   try {
     const result = await dbClient.query(query);
     res.status(200).json(result.rows);
