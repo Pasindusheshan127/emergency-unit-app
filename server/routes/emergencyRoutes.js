@@ -1,9 +1,13 @@
 const express = require("express");
-const EmergencyController = require("../controllers/emergencyController");
+const {
+  createEmergency,
+  getEmergencies,
+} = require("../controllers/emergenciesContoller");
 
 const router = express.Router();
 
-router.post("/emergencies", EmergencyController.createEmergency);
-router.get("/emergencies", EmergencyController.getEmergencies);
+router.post("/", createEmergency);
+
+router.get("/", getEmergencies);
 
 module.exports = router;
