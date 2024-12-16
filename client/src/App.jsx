@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { EmergencyCenterPage } from "./pages/EmergencyCenterPage";
 import EmergencyDashboard from "./pages/EmergencyDashboard";
+import PoliceStationDashboard from "./pages/PoliceStationDashboard";
 
 function App() {
   useEffect(() => {
@@ -33,6 +34,10 @@ function App() {
         <Routes>
           <Route path="/" element={<EmergencyCenterPage />} />
           <Route path="/emergency-dashboard" element={<EmergencyDashboard />} />
+          <Route
+            path="/policeStation-dashboard"
+            element={<PoliceStationDashboard />}
+          />
         </Routes>
       </Router>
     </>

@@ -142,6 +142,8 @@ const EmergencyDashboard = () => {
                     <option value="">Select</option>
                     <option value="Station1">Station 1</option>
                     <option value="Station2">Station 2</option>
+                    <option value="Station3">Station 3</option>
+                    <option value="Station4">Station 4</option>
                   </select>
                   <button
                     onClick={() => handleUpdate(row)}
