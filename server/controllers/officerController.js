@@ -12,10 +12,11 @@ const assignOfficer = async (req, res) => {
     const values = [emergency_id, officer_id, assigned_by_user_id];
 
     const result = await dbClient.query(query, values);
+
     const assignment = result.rows[0];
 
-    //Emit the officer assignment to all connected clients
-    req.io.emit("officerAssigned ", assignment);
+    // Emit the officer assignment to all connected clients
+    req.io.emit("officerAssigned", assignment);
 
     res.status(200).json(assignment);
   } catch (error) {
