@@ -34,7 +34,9 @@ const getassignStation = async (req, res) => {
     e.name AS emergency_name,
     CONCAT(e.location_latitude, ', ', e.location_longitude) AS emergency_location,
     e.phone_number,
-    sa.assigned_at
+    sa.assigned_at,
+    sa.station_id,
+  	e.e_id
 FROM 
     emergencies e
 JOIN 
