@@ -28,7 +28,18 @@ const assignOfficer = async (req, res) => {
 };
 
 const getassignOfficer = async (req, res) => {
-  const query = `SELECT * FROM officer_assignments ORDER BY id DESC`;
+  const query = `SELECT 
+    e.e_id AS incident_id,
+    sa.assigned_by_user_id,
+    sa.station_id AS station_id,
+    sa.assigned_at,
+    oa.officer_id
+FROM 
+    emergencies e
+JOIN 
+    station_assignments sa ON e.e_id = sa.emergency_id
+LEFT JOIN 
+    officer_assignments oa ON e.e_id = oa.emergency_id`;
   try {
     const result = await dbClient.query(query);
     res.status(200).json(result.rows);
