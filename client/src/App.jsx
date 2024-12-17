@@ -6,6 +6,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { EmergencyCenterPage } from "./pages/EmergencyCenterPage";
 import EmergencyDashboard from "./pages/EmergencyDashboard";
 import PoliceStationDashboard from "./pages/PoliceStationDashboard";
+import StationOfficerDashboardPage from "./pages/StationOfficerDashboardPage";
+import EmergencyStationAssignDashboard from "./pages/EmergencyStationAssignDashboard";
+import MapPage from "./pages/MapPage";
 
 function App() {
   useEffect(() => {
@@ -38,6 +41,15 @@ function App() {
             path="/policeStation-dashboard"
             element={<PoliceStationDashboard />}
           />
+          <Route
+            path="/StationOfficer-dashboard"
+            element={<StationOfficerDashboardPage />}
+          />
+          <Route
+            path="/emergency-station-assign-dashboard"
+            element={<EmergencyStationAssignDashboard />}
+          />
+          <Route path="/map" element={<MapPage />} />
         </Routes>
       </Router>
     </>

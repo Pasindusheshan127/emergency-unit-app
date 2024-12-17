@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 
 const EmergencyDashboard = () => {
   const [data, setData] = useState([]);
+  const [feedback, setFeedback] = useState(null);
+
+  const socket = useRef(null); // Use useRef to store socket object
+
+  // Function to play beep sound
+  const playBeep = () => {
+    const audio = new Audio("/level-up.mp3");
+    audio.play();
+  };
 
   const calculateElapsedTime = (createdTime) => {
     const total = Date.parse(new Date()) - Date.parse(createdTime);
@@ -15,7 +24,7 @@ const EmergencyDashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const socket = io("http://localhost:5000");
+      socket.current = io("http://localhost:5000");
       try {
         const response = await axios.get(
           "http://localhost:5000/api/emergencies"
@@ -29,17 +38,24 @@ const EmergencyDashboard = () => {
         }
 
         // Listen for real-time updates
-        socket.on("newEmergency", (newEmergency) => {
+        socket.current.on("newEmergency", (newEmergency) => {
           console.log("New emergency received:", newEmergency);
 
-          // Play beep sound once
           const audio = new Audio("/alert.mp3");
           audio.play();
 
-          // Update the data state with the new emergency
-          setData((prevData) => [newEmergency, ...prevData]);
+          setData((prevData) => {
+            const isDuplicate = prevData.some(
+              (row) => row.e_id === newEmergency.e_id
+            );
+            return isDuplicate ? prevData : [newEmergency, ...prevData];
+          });
         });
-        return () => socket.off("newEmergency");
+
+        return () => {
+          socket.current.off("newEmergency");
+          socket.current.disconnect();
+        };
       } catch (error) {
         console.error("Error fetching data:", error);
         alert("Failed to load data. Please try again.");
@@ -100,6 +116,42 @@ const EmergencyDashboard = () => {
       console.error("Error updating data:", error);
       alert("Failed to update dashboard. Please try again.");
     }
+    // Play beep sound after successful submission
+    playBeep();
+  };
+
+  const handleMapButtonClick = async (row) => {
+    const { location_latitude, location_longitude } = row;
+
+    // Check if location data is available
+    if (!location_latitude || !location_longitude) {
+      setFeedback({ type: "error", message: "Missing location data" });
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/generate-map-url", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          xDirection: location_latitude, // Use xDirection for latitude
+          yDirection: location_longitude, // Use yDirection for longitude
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to generate map URL.");
+      }
+
+      setFeedback({ type: "success", message: data.message });
+      window.open(data.mapUrl, "_blank"); // Open the generated map URL in a new tab
+    } catch (error) {
+      setFeedback({ type: "error", message: error.message });
+    }
   };
 
   return (
@@ -116,7 +168,8 @@ const EmergencyDashboard = () => {
               <th className="px-6 py-3 text-left">Location</th>
               <th className="px-6 py-3 text-left">Phone Number</th>
               <th className="px-6 py-3 text-left">Time</th>
-              <th className="px-6 py-3 text-left">Actions</th>
+              <th className="px-6 py-3 text-left">Assign Station</th>
+              <th className="px-6 py-3 text-left">Map</th>
             </tr>
           </thead>
           <tbody className="bg-white">
@@ -140,16 +193,24 @@ const EmergencyDashboard = () => {
                     className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Select</option>
-                    <option value="Station1">Station 1</option>
-                    <option value="Station2">Station 2</option>
-                    <option value="Station3">Station 3</option>
-                    <option value="Station4">Station 4</option>
+                    <option value="111">Station 1</option>
+                    <option value="222">Station 2</option>
+                    <option value="333">Station 3</option>
+                    <option value="444">Station 4</option>
                   </select>
                   <button
                     onClick={() => handleUpdate(row)}
                     className="ml-3 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
                   >
                     Update
+                  </button>
+                </td>
+                <td className="px-6 py-4">
+                  <button
+                    onClick={() => handleMapButtonClick(row)}
+                    className="ml-3 px-4 py-2 bg-red-700 text-white rounded-md hover:bg-red-400 focus:outline-none"
+                  >
+                    open map
                   </button>
                 </td>
               </tr>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const PoliceStation = ({ police = 1 }) => {
+const PoliceStation = ({ police = 111 }) => {
   const [data, setData] = useState([]);
   const [selectedOfficerId, setSelectedOfficerId] = useState("");
 
@@ -22,7 +22,7 @@ const PoliceStation = ({ police = 1 }) => {
         if (response.status === 200) {
           // Filter for only records that belong to DashboardA
           const dashboardAData = response.data.filter(
-            (row) => row.station_id === "Station1"
+            (row) => row.station_id === police && !row.assigned_officer_id
           );
           setData(dashboardAData);
         }
@@ -33,6 +33,8 @@ const PoliceStation = ({ police = 1 }) => {
     };
 
     fetchData();
+
+    // console.log(police);
   }, []);
 
   const handleAssignOfficer = async (id) => {
@@ -41,26 +43,23 @@ const PoliceStation = ({ police = 1 }) => {
       return;
     }
 
-    // try {
-    //   const response = await axios.put(
-    //     `http://localhost:5000/api/data/assign-officer/${id}`,
-    //     { officer_id: selectedOfficerId }
-    //   );
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/assign-officer`,
+        {
+          emergency_id: id,
+          officer_id: selectedOfficerId,
+        }
+      );
 
-    //   if (response.status === 200) {
-    //     setData((prevData) =>
-    //       prevData.map((row) =>
-    //         row.id === id ? { ...row, officer_id: selectedOfficerId } : row
-    //       )
-    //     );
-
-    //     alert("Officer assigned successfully.");
-    //     // Remove the page reload and simply update the state
-    //   }
-    // } catch (error) {
-    //   console.log("Error assigning officer:", error);
-    //   alert("Failed to assign officer.");
-    // }
+      if (response.status === 200) {
+        setData((prevData) => prevData.filter((row) => row.e_id !== id));
+        alert("Officer assigned successfully.");
+      }
+    } catch (error) {
+      console.log("Error assigning officer:", error);
+      alert("Failed to assign officer.");
+    }
   };
 
   useEffect(() => {

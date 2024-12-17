@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
 export const EmergencyCenterPage = () => {
@@ -58,6 +58,8 @@ export const EmergencyCenterPage = () => {
       // Check for both 200 and 201 status codes
       if (response.status === 200 || response.status === 201) {
         console.log(response);
+        setName("");
+        setPhone("");
       }
     } catch (error) {
       console.error("Error submitting data:", error);

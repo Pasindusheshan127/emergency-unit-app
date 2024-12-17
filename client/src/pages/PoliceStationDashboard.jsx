@@ -4,7 +4,7 @@ import PoliceStation from "../components/PoliceStation";
 const PoliceStationDashboard = () => {
   return (
     <div>
-      <PoliceStation police={1} />
+      <PoliceStation police={111} />
     </div>
   );
 };
