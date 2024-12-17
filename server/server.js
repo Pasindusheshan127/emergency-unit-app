@@ -42,6 +42,28 @@ app.use("/api/emergencies", emergencyRoute);
 app.use("/api/assign-station", assignStationRoute);
 app.use("/api/assign-officer", assignofficerRoute);
 
+app.post("/generate-map-url", (req, res) => {
+  const { xDirection, yDirection } = req.body;
+
+  // Check for missing fields
+  if (!xDirection || !yDirection) {
+    return res.status(400).json({
+      success: false,
+      message:
+        "Both xDirection (latitude) and yDirection (longitude) are required.",
+    });
+  }
+
+  const baseUrl = "https://www.google.com/maps?q=";
+  const mapUrl = `${baseUrl}${xDirection},${yDirection}`;
+
+  return res.status(200).json({
+    success: true,
+    message: "Google Maps URL generated successfully.",
+    mapUrl,
+  });
+});
+
 // Handle Socket.io Connections
 io.on("connection", (socket) => {
   console.log("A client connected:", socket.id);

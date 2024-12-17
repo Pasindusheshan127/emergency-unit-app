@@ -4,12 +4,18 @@ const assignOfficer = async (req, res) => {
   const { emergency_id, officer_id } = req.body;
 
   const assigned_by_user_id = "pol123";
+  const user_station_id = 111;
 
   try {
-    const query = `INSERT INTO officer_assignments (emergency_id, officer_id, assigned_by_user_id) 
-    VALUES ($1,$2,$3) RETURNING *`;
+    const query = `INSERT INTO officer_assignments (emergency_id, officer_id, assigned_by_user_id, user_station_id) 
+    VALUES ($1,$2,$3,$4) RETURNING *`;
 
-    const values = [emergency_id, officer_id, assigned_by_user_id];
+    const values = [
+      emergency_id,
+      officer_id,
+      assigned_by_user_id,
+      user_station_id,
+    ];
 
     const result = await dbClient.query(query, values);
 
@@ -33,7 +39,9 @@ const getassignOfficer = async (req, res) => {
     sa.assigned_by_user_id,
     sa.station_id AS station_id,
     sa.assigned_at,
-    oa.officer_id
+    oa.officer_id,
+	oa.user_station_id,
+	oa.id
 FROM 
     emergencies e
 JOIN 
