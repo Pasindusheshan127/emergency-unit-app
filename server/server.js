@@ -8,6 +8,7 @@ const dbClient = require("./models/db");
 const emergencyRoute = require("./routes/emergencyRoutes");
 const assignStationRoute = require("./routes/stationRoutes");
 const assignofficerRoute = require("./routes/officerRoutes");
+const officerEmergenciesRoute = require("./routes/officerEmergencyRoutes");
 
 const app = express();
 const server = http.createServer(app);
@@ -41,6 +42,7 @@ app.use((req, res, next) => {
 app.use("/api/emergencies", emergencyRoute);
 app.use("/api/assign-station", assignStationRoute);
 app.use("/api/assign-officer", assignofficerRoute);
+app.use("/api/officer-emergencies", officerEmergenciesRoute);
 
 app.post("/generate-map-url", (req, res) => {
   const { xDirection, yDirection } = req.body;

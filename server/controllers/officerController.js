@@ -7,24 +7,77 @@ const assignOfficer = async (req, res) => {
   const user_station_id = 111;
 
   try {
-    const query = `INSERT INTO officer_assignments (emergency_id, officer_id, assigned_by_user_id, user_station_id) 
-    VALUES ($1,$2,$3,$4) RETURNING *`;
+    // Step 1: Check if the emergency exists
+    const emergencyCheckQuery = `SELECT * FROM emergencies WHERE e_id = $1`;
+    const emergencyResult = await dbClient.query(emergencyCheckQuery, [
+      emergency_id,
+    ]);
+    if (emergencyResult.rows.length === 0) {
+      return res.status(404).json({ error: "Emergency not found." });
+    }
 
-    const values = [
+    // Step 2: Check if the police officer exists
+    const officerCheckQuery = `SELECT * FROM police_officers WHERE phone_number = $1`;
+    const officerResult = await dbClient.query(officerCheckQuery, [officer_id]);
+    if (officerResult.rows.length === 0) {
+      return res.status(404).json({ error: "Police officer not found." });
+    }
+
+    // Step 4: Insert a new record in the officer_assignments table
+    const insertAssignmentQuery = `INSERT INTO officer_assignments (emergency_id, officer_id, assigned_by_user_id, user_station_id) 
+    VALUES ($1,$2,$3,$4) RETURNING *`;
+    const insertAssignmentResult = await dbClient.query(insertAssignmentQuery, [
       emergency_id,
       officer_id,
       assigned_by_user_id,
       user_station_id,
-    ];
+    ]);
 
-    const result = await dbClient.query(query, values);
+    //step 4 : get the id(officer_assignments) according to the emergency from the officer_assignments table
+    const officerAssignmentQuery = `SELECT id FROM officer_assignments WHERE emergency_id = $1`;
+    const officerAssignmentResult = await dbClient.query(
+      officerAssignmentQuery,
+      [emergency_id]
+    );
 
-    const assignment = result.rows[0];
+    //step 5: Update the station_assignments  record with the id which was get from the officer_assignments table
+    const updateStationQuery = `UPDATE station_assignments SET officer_assignment_id = $1 WHERE emergency_id = $2`;
+    await dbClient.query(updateStationQuery, [
+      officerAssignmentResult.rows[0].id,
+      emergency_id,
+    ]);
+
+    // Emit real-time update to all connected clients
+    req.io.emit("officerAssigned", {
+      emergency: insertAssignmentResult.rows[0],
+      station_id: user_station_id,
+    });
+
+    // Return success response with updated station_assignments data and new assignment record
+    res.status(200).json({
+      message: "Officer assigned successfully.",
+      officer: insertAssignmentResult.rows[0],
+      station_id: user_station_id,
+    });
+
+    // const query = `INSERT INTO officer_assignments (emergency_id, officer_id, assigned_by_user_id, user_station_id)
+    // VALUES ($1,$2,$3,$4) RETURNING *`;
+
+    // const values = [
+    //   emergency_id,
+    //   officer_id,
+    //   assigned_by_user_id,
+    //   user_station_id,
+    // ];
+
+    // const result = await dbClient.query(query, values);
+
+    // const assignment = result.rows[0];
 
     // Emit the officer assignment to all connected clients
-    req.io.emit("officerAssigned", assignment);
+    // req.io.emit("officerAssigned", assignment);
 
-    res.status(200).json(assignment);
+    // res.status(200).json(assignment);
   } catch (error) {
     console.error(error.message);
     res

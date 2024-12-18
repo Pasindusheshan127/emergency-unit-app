@@ -9,6 +9,7 @@ import PoliceStationDashboard from "./pages/PoliceStationDashboard";
 import StationOfficerDashboardPage from "./pages/StationOfficerDashboardPage";
 import EmergencyStationAssignDashboard from "./pages/EmergencyStationAssignDashboard";
 import MapPage from "./pages/MapPage";
+import PoliceOfficerDashboard from "./pages/PoliceOfficerDashboard";
 
 function App() {
   useEffect(() => {
@@ -38,7 +39,7 @@ function App() {
           <Route path="/" element={<EmergencyCenterPage />} />
           <Route path="/emergency-dashboard" element={<EmergencyDashboard />} />
           <Route
-            path="/policeStation-dashboard"
+            path="/policeStations-dashboard"
             element={<PoliceStationDashboard />}
           />
           <Route
@@ -49,7 +50,12 @@ function App() {
             path="/emergency-station-assign-dashboard"
             element={<EmergencyStationAssignDashboard />}
           />
+          {/*this roue use for testing map component */}
           <Route path="/map" element={<MapPage />} />
+          <Route
+            path="/policeOfficers-dashboard"
+            element={<PoliceOfficerDashboard />}
+          />
         </Routes>
       </Router>
     </>

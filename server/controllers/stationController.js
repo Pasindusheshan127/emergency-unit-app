@@ -83,7 +83,8 @@ const getassignStation = async (req, res) => {
 	sa.station_id,
 	e.e_id,
   sa.s_id,
-	sa.assigned_by_user_id
+	sa.assigned_by_user_id,
+  sa.officer_assignment_id
 FROM 
     emergencies e
 JOIN 
