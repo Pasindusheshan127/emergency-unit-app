@@ -9,6 +9,7 @@ const emergencyRoute = require("./routes/emergencyRoutes");
 const assignStationRoute = require("./routes/stationRoutes");
 const assignofficerRoute = require("./routes/officerRoutes");
 const officerEmergenciesRoute = require("./routes/officerEmergencyRoutes");
+const googleMapUrlRoute = require("./routes/googleMapRoutes");
 
 const app = express();
 const server = http.createServer(app);
@@ -43,28 +44,29 @@ app.use("/api/emergencies", emergencyRoute);
 app.use("/api/assign-station", assignStationRoute);
 app.use("/api/assign-officer", assignofficerRoute);
 app.use("/api/officer-emergencies", officerEmergenciesRoute);
+app.use("/api/generate-map-url", googleMapUrlRoute);
 
-app.post("/generate-map-url", (req, res) => {
-  const { xDirection, yDirection } = req.body;
+// app.post("/generate-map-url", (req, res) => {
+//   const { xDirection, yDirection } = req.body;
 
-  // Check for missing fields
-  if (!xDirection || !yDirection) {
-    return res.status(400).json({
-      success: false,
-      message:
-        "Both xDirection (latitude) and yDirection (longitude) are required.",
-    });
-  }
+//   // Check for missing fields
+//   if (!xDirection || !yDirection) {
+//     return res.status(400).json({
+//       success: false,
+//       message:
+//         "Both xDirection (latitude) and yDirection (longitude) are required.",
+//     });
+//   }
 
-  const baseUrl = "https://www.google.com/maps?q=";
-  const mapUrl = `${baseUrl}${xDirection},${yDirection}`;
+//   const baseUrl = "https://www.google.com/maps?q=";
+//   const mapUrl = `${baseUrl}${xDirection},${yDirection}`;
 
-  return res.status(200).json({
-    success: true,
-    message: "Google Maps URL generated successfully.",
-    mapUrl,
-  });
-});
+//   return res.status(200).json({
+//     success: true,
+//     message: "Google Maps URL generated successfully.",
+//     mapUrl,
+//   });
+// });
 
 // Handle Socket.io Connections
 io.on("connection", (socket) => {

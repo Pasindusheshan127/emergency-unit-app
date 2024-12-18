@@ -43,4 +43,28 @@ const getEmergencies = async (req, res) => {
   }
 };
 
-module.exports = { createEmergency, getEmergencies };
+// Endpoint to mark an emergency as checked
+const markEmergency = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const query = `UPDATE emergencies SET checked_by_officer = true WHERE e_id = $1 RETURNING *`;
+    const values = [id];
+
+    const result = await dbClient.query(query, values);
+    // console.log("Query result:", result); // Log the result
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Emergency not found" });
+    }
+
+    res.status(200).json({
+      message: "Emergency marked as checked",
+      emergency: result.rows[0],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { createEmergency, getEmergencies, markEmergency };
