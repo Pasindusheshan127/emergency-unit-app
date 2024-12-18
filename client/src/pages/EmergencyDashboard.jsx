@@ -130,16 +130,19 @@ const EmergencyDashboard = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/generate-map-url", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          xDirection: location_latitude, // Use xDirection for latitude
-          yDirection: location_longitude, // Use yDirection for longitude
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/generate-map-url",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            xDirection: location_latitude, // Use xDirection for latitude
+            yDirection: location_longitude, // Use yDirection for longitude
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -148,7 +151,7 @@ const EmergencyDashboard = () => {
       }
 
       setFeedback({ type: "success", message: data.message });
-      window.open(data.mapUrl, "_blank"); // Open the generated map URL in a new tab
+      window.open(data.pinLocationUrl, "_blank"); // Open the generated map URL in a new tab
     } catch (error) {
       setFeedback({ type: "error", message: error.message });
     }

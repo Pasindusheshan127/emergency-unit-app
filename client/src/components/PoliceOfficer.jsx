@@ -22,6 +22,75 @@ const PoliceOfficer = ({ officer, id }) => {
     fetchData();
   }, []);
 
+  const handleMapButtonClick = async (row) => {
+    const { location_latitude, location_longitude } = row;
+
+    try {
+      // Get user's current location
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude: currentLatitude, longitude: currentLongitude } =
+            position.coords;
+
+          // Fetch the directions URL from the backend
+          const response = await fetch(
+            "http://localhost:5000/api/generate-map-url",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                xDirection: location_latitude,
+                yDirection: location_longitude,
+              }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              data.message || "Failed to generate directions URL."
+            );
+          }
+
+          // Append the origin (current location) to the directions URL
+          const fullDirectionsUrl = `${data.directionsUrl}&origin=${currentLatitude},${currentLongitude}`;
+
+          // Open the directions in Google Maps
+          window.open(fullDirectionsUrl, "_blank");
+        },
+        (error) => {
+          throw new Error(
+            "Unable to retrieve current location. Please allow location access."
+          );
+        }
+      );
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  //Marked an emeregency as checked
+
+  const handleMarkChechked = async (id) => {
+    try {
+      const result = await axios.patch(
+        `http://localhost:5000/api/emergencies/${id}/mark-checked`
+      );
+      console.log(result);
+      if (result.status === 200) {
+        setEmergencies((prev) =>
+          prev.filter((emergency) => emergency.emergency_id !== id)
+        );
+        alert("Good Job!");
+      }
+    } catch (error) {
+      console.error("Error marking emergency as checked", error);
+    }
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold text-center mb-8">
@@ -63,12 +132,18 @@ const PoliceOfficer = ({ officer, id }) => {
                   {new Date(emergency.officer_assigned_at).toLocaleString()}
                 </td>
                 <td className="px-6 py-4">
-                  <button className="border border-black text-red-600 px-2 rounded-lg">
+                  <button
+                    onClick={() => handleMapButtonClick(emergency)}
+                    className="border border-black text-red-600 px-2 rounded-lg"
+                  >
                     Drive
                   </button>
                 </td>
                 <td className="px-6 py-4">
-                  <button className="border border-black text-green-500 px-2 rounded-lg">
+                  <button
+                    onClick={() => handleMarkChechked(emergency.emergency_id)}
+                    className="border border-black text-green-500 px-2 rounded-lg"
+                  >
                     Finish
                   </button>
                 </td>
