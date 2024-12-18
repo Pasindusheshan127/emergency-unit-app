@@ -21,10 +21,11 @@ const PoliceStation = ({ police = 111 }) => {
         );
         if (response.status === 200) {
           // Filter for only records that belong to DashboardA
-          const dashboardAData = response.data.filter(
-            (row) => row.station_id === police && !row.assigned_officer_id
+          const stationData = response.data.filter(
+            (row) =>
+              row.station_id === police && row.officer_assignment_id === null
           );
-          setData(dashboardAData);
+          setData(stationData);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -123,7 +124,7 @@ const PoliceStation = ({ police = 111 }) => {
                   />
                   <button
                     className="border border-black px-2 rounded-lg"
-                    onClick={() => handleAssignOfficer(row.id)}
+                    onClick={() => handleAssignOfficer(row.e_id)}
                   >
                     Assign
                   </button>
