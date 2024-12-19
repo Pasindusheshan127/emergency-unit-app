@@ -13,7 +13,7 @@ const PoliceOfficerDashboard = () => {
         );
         if (response.status === 200) {
           setPoliceOfficers(response.data);
-          console.log(policeOfficers);
+          // console.log(policeOfficers);
         }
       } catch (error) {
         console.error("Failed to fetch data", error);
@@ -24,12 +24,6 @@ const PoliceOfficerDashboard = () => {
     fetchData();
   }, []);
 
-  const officers = [
-    { id: "0123456789", name: "Officer1" },
-    { id: "2", name: "Officer2" },
-    { id: "3", name: "Officer3" },
-  ];
-
   return (
     <div className="p-6 bg-white text-black">
       <h1 className="text-3xl font-bold text-center mb-16">Police Officers</h1>
@@ -37,7 +31,7 @@ const PoliceOfficerDashboard = () => {
         {policeOfficers.map((officer) => (
           <Link
             key={officer.id}
-            to={`/policeOfficers-dashboard/officer/${policeOfficers.id}`}
+            to={`/policeOfficers-dashboard/officer/${officer.phone_number}`}
             className="px-6 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600"
           >
             {officer.name}

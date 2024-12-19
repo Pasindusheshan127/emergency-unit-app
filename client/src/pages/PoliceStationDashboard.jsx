@@ -1,13 +1,33 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const PoliceStationDashboard = () => {
-  const stations = [
-    { id: 111, name: "Station A" },
-    { id: 112, name: "Station B" },
-    { id: 113, name: "Station C" },
-    // Add more stations here
-  ];
+  const [stations, setStations] = useState([]);
+
+  // const stations = [
+  //   { id: 111, name: "Station A" },
+  //   { id: 112, name: "Station B" },
+  //   { id: 113, name: "Station C" },
+  //   // Add more stations here
+  // ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/police-stations"
+        );
+        if (response.status === 200) {
+          setStations(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("Failed to load data. Please try again.");
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="p-6 bg-white text-black">
@@ -15,8 +35,8 @@ const PoliceStationDashboard = () => {
       <div className="grid grid-cols-3 gap-4">
         {stations.map((station) => (
           <Link
-            key={station.id}
-            to={`/policeStations-dashboard/station/${station.id}`}
+            key={station.p_id}
+            to={`/policeStations-dashboard/station/${station.p_id}`}
             className="px-6 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600"
           >
             {station.name}
