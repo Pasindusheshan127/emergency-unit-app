@@ -1,12 +1,21 @@
 import axios from "axios";
 import { Navigation } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import io from "socket.io-client";
 
 const PoliceOfficer = () => {
   const { officerId } = useParams();
 
   const [emergencies, setEmergencies] = useState([]);
+
+  const socket = useRef(null);
+
+  // Function to play beep sound
+  const playBeep = () => {
+    const audio = new Audio("/level-up.mp3");
+    audio.play();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +31,6 @@ const PoliceOfficer = () => {
         alert("Failed to load data. Please try again.");
       }
     };
-
     fetchData();
   }, []);
 
