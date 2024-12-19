@@ -26,7 +26,7 @@ function App() {
     });
 
     socket.on("officerAssigned", (data) => {
-      console.log("Officer assigned:", data);
+      // console.log("Officer assigned:", data);
     });
 
     // Cleanup to avoid memory leaks

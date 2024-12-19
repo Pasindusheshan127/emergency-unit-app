@@ -34,6 +34,32 @@ const PoliceOfficer = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    //Initialize the socket connection
+    socket.current = io("http://localhost:5000");
+
+    //Listen to new 'assignOfficer' events
+    socket.current.on("officerAssigned", (data) => {
+      console.log("Officer assigned:", data.emergency);
+      console.log("before emergencies", emergencies);
+      const newEmergency = data.emergency;
+      //check if the assigned officer matches thr current offerId
+      if (data.emergency.officer_id === officerId) {
+        //play beep sound
+        playBeep();
+
+        //update the emergencies array with the new assigned emergency
+        setEmergencies((prevEmergencies) => [...prevEmergencies, newEmergency]);
+      }
+      console.log("aftter emergencies", emergencies);
+    });
+
+    return () => {
+      //clean up the conection on unmount
+      socket.current.disconnect();
+    };
+  }, [officerId]);
+
   const handleMapButtonClick = async (row) => {
     const { location_latitude, location_longitude } = row;
 

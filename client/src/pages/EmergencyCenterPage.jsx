@@ -70,8 +70,18 @@ export const EmergencyCenterPage = () => {
     playBeep();
   };
 
+  // Function to handle enter key press event
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleEmergency();
+    }
+  };
+
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-gray-100">
+    <div
+      className="h-screen flex flex-col justify-center items-center bg-gray-100"
+      onKeyDown={handleKeyDown}
+    >
       <h1 className="text-2xl mb-6">Emergency Center</h1>
       <div className="flex flex-col items-center w-full">
         <input
@@ -91,6 +101,7 @@ export const EmergencyCenterPage = () => {
       </div>
       <button
         onClick={handleEmergency}
+        tabIndex={0} // Ensures the button is focusable for keyboard events
         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
       >
         Emergency
