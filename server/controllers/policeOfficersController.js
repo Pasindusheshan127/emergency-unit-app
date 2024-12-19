@@ -13,8 +13,6 @@ const getPoliceOfficers = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
-  } finally {
-    await dbClinet.end();
   }
 };
 
