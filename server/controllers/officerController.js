@@ -47,10 +47,36 @@ const assignOfficer = async (req, res) => {
       emergency_id,
     ]);
 
+    const newOfficerAssignedQ = `
+        SELECT 
+    e.e_id AS emergency_id,
+    e.name AS emergency_name,
+    e.phone_number,
+    e.location_latitude,
+    e.location_longitude,
+    e.created_at AS emergency_created_at,
+    os.assigned_at AS officer_assigned_at,
+    e.checked_by_officer
+FROM 
+    officer_assignments os
+INNER JOIN 
+    emergencies e ON os.emergency_id = e.e_id
+WHERE 
+    os.officer_id = $1 
+    AND e.checked_by_officer IS NOT TRUE
+ORDER BY 
+    os.assigned_at DESC;
+`;
+
+    const newOfficerAssigned = await dbClient.query(newOfficerAssignedQ, [
+      officer_id,
+    ]);
+
     // Emit real-time update to all connected clients
     req.io.emit("officerAssigned", {
-      emergency: insertAssignmentResult.rows[0],
+      emergency: newOfficerAssigned.rows[0],
       station_id: user_station_id,
+      officer_id: officer_id,
     });
 
     // Return success response with updated station_assignments data and new assignment record
