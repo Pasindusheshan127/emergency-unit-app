@@ -11,6 +11,7 @@ const assignofficerRoute = require("./routes/officerRoutes");
 const officerEmergenciesRoute = require("./routes/officerEmergencyRoutes");
 const googleMapUrlRoute = require("./routes/googleMapRoutes");
 const policeStationsRoutes = require("./routes/policeStationsRoutes");
+const policeofficersRoute = require("./routes/policeOfficersRoutes");
 
 const app = express();
 const server = http.createServer(app);
@@ -47,6 +48,7 @@ app.use("/api/assign-officer", assignofficerRoute);
 app.use("/api/officer-emergencies", officerEmergenciesRoute);
 app.use("/api/generate-map-url", googleMapUrlRoute);
 app.use("/api/police-stations", policeStationsRoutes);
+app.use("/api/police-officers", policeofficersRoute);
 
 // app.post("/generate-map-url", (req, res) => {
 //   const { xDirection, yDirection } = req.body;
