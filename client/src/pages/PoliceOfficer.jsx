@@ -1,14 +1,18 @@
 import axios from "axios";
+import { Navigation } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-const PoliceOfficer = ({ officer, id }) => {
+const PoliceOfficer = () => {
+  const { officerId } = useParams();
+
   const [emergencies, setEmergencies] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          ` http://localhost:5000/api/officer-emergencies/${id}`
+          ` http://localhost:5000/api/officer-emergencies/${officerId}`
         );
         if (response.status === 200) {
           setEmergencies(response.data);
@@ -76,6 +80,17 @@ const PoliceOfficer = ({ officer, id }) => {
 
   const handleMarkChechked = async (id) => {
     try {
+      //Display confirmation dialog
+      const isConfirmed = window.confirm(
+        "Are you sure you want to mark this emergency as checked?"
+      );
+
+      //process only if confirmed
+      if (!isConfirmed) {
+        alert(" confirmation dialog is not confirmed ");
+        return;
+      }
+
       const result = await axios.patch(
         `http://localhost:5000/api/emergencies/${id}/mark-checked`
       );
@@ -94,7 +109,7 @@ const PoliceOfficer = ({ officer, id }) => {
   return (
     <div>
       <h1 className="text-3xl font-bold text-center mb-8">
-        POLICE OFFICER {name}
+        POLICE OFFICER {officerId}
       </h1>
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto border-separate border-spacing-0">
@@ -132,12 +147,18 @@ const PoliceOfficer = ({ officer, id }) => {
                   {new Date(emergency.officer_assigned_at).toLocaleString()}
                 </td>
                 <td className="px-6 py-4">
-                  <button
+                  {/* <button
                     onClick={() => handleMapButtonClick(emergency)}
                     className="border border-black text-red-600 px-2 rounded-lg"
                   >
                     Drive
-                  </button>
+                  </button> */}
+                  <Navigation
+                    onClick={() => handleMapButtonClick(emergency)}
+                    size={36}
+                    color="#c11f1f"
+                    strokeWidth={1.5}
+                  />
                 </td>
                 <td className="px-6 py-4">
                   <button

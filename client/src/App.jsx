@@ -8,9 +8,10 @@ import EmergencyDashboard from "./pages/EmergencyDashboard";
 import PoliceStationDashboard from "./pages/PoliceStationDashboard";
 import StationOfficerDashboardPage from "./pages/StationOfficerDashboardPage";
 import EmergencyStationAssignDashboard from "./pages/EmergencyStationAssignDashboard";
-import MapPage from "./pages/MapPage";
 import PoliceOfficerDashboard from "./pages/PoliceOfficerDashboard";
 import PoliceStation from "./pages/PoliceStation";
+import PoliceOfficer from "./pages/PoliceOfficer";
+import MainDashboard from "./pages/MainDashboard";
 
 function App() {
   useEffect(() => {
@@ -42,8 +43,9 @@ function App() {
           <Route
             path="/policeStations-dashboard"
             element={<PoliceStationDashboard />}
-            // element={<Policestationtest />}
           />
+          <Route path="/main-dashboard" element={<MainDashboard />} />
+
           <Route
             path="/policeStations-dashboard/station/:stationId"
             element={<PoliceStation />}
@@ -60,6 +62,10 @@ function App() {
           <Route
             path="/policeOfficers-dashboard"
             element={<PoliceOfficerDashboard />}
+          />
+          <Route
+            path="/policeOfficers-dashboard/officer/:officerId"
+            element={<PoliceOfficer />}
           />
         </Routes>
       </Router>

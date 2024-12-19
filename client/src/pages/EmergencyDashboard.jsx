@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 
+import { CompassIcon } from "lucide-react";
+
 const EmergencyDashboard = () => {
   const [data, setData] = useState([]);
   const [feedback, setFeedback] = useState(null);
@@ -106,6 +108,17 @@ const EmergencyDashboard = () => {
     }
 
     try {
+      //Display confirmation message
+      const confirmation = window.confirm(
+        `Are you sure you want to assign Staion to emergency ID ${row.e_id} - ${row.name}?`
+      );
+      if (!confirmation) {
+        alert(
+          `confirmation message is required to assign Staion to emergency ID ${row.e_id}`
+        );
+        return;
+      }
+
       await axios.post(`http://localhost:5000/api/assign-station`, {
         emergency_id: row.e_id,
         station_id: row.assigned_station_id,
@@ -209,12 +222,18 @@ const EmergencyDashboard = () => {
                   </button>
                 </td>
                 <td className="px-6 py-4">
-                  <button
+                  {/* <button
                     onClick={() => handleMapButtonClick(row)}
                     className="ml-3 px-4 py-2 bg-red-700 text-white rounded-md hover:bg-red-400 focus:outline-none"
                   >
                     open map
-                  </button>
+                  </button> */}
+
+                  <CompassIcon
+                    onClick={() => handleMapButtonClick(row)}
+                    size={44}
+                    color="#ad5252"
+                  />
                 </td>
               </tr>
             ))}

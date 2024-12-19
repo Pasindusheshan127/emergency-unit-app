@@ -16,7 +16,7 @@ const PoliceStationDashboard = () => {
         {stations.map((station) => (
           <Link
             key={station.id}
-            to={`/policeStations-dashboard/station/${station.id}`} // Corrected URL with leading slash
+            to={`/policeStations-dashboard/station/${station.id}`}
             className="px-6 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600"
           >
             {station.name}
