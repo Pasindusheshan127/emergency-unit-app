@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-const PoliceStation = ({ police = 111 }) => {
+const PoliceStation = () => {
+  const { stationId } = useParams(); // Get stationId from the URL
   const [data, setData] = useState([]);
   const [selectedOfficerId, setSelectedOfficerId] = useState("");
 
@@ -23,7 +25,8 @@ const PoliceStation = ({ police = 111 }) => {
           // Filter for only records that belong to DashboardA
           const stationData = response.data.filter(
             (row) =>
-              row.station_id === police && row.officer_assignment_id === null
+              row.station_id === parseInt(stationId) &&
+              row.officer_assignment_id === null
           );
           setData(stationData);
         }
@@ -34,9 +37,7 @@ const PoliceStation = ({ police = 111 }) => {
     };
 
     fetchData();
-
-    // console.log(police);
-  }, []);
+  }, [stationId]); // Dependency on stationId to refetch data when the station changes
 
   const handleAssignOfficer = async (id) => {
     if (!selectedOfficerId) {
@@ -91,7 +92,7 @@ const PoliceStation = ({ police = 111 }) => {
   return (
     <div className="p-6 bg-white text-black">
       <h1 className="text-3xl font-bold text-center mb-8">
-        POLICE STATION {police}
+        POLICE STATION {stationId}
       </h1>
 
       <div className="overflow-x-auto">

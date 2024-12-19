@@ -10,6 +10,7 @@ import StationOfficerDashboardPage from "./pages/StationOfficerDashboardPage";
 import EmergencyStationAssignDashboard from "./pages/EmergencyStationAssignDashboard";
 import MapPage from "./pages/MapPage";
 import PoliceOfficerDashboard from "./pages/PoliceOfficerDashboard";
+import PoliceStation from "./pages/PoliceStation";
 
 function App() {
   useEffect(() => {
@@ -41,6 +42,11 @@ function App() {
           <Route
             path="/policeStations-dashboard"
             element={<PoliceStationDashboard />}
+            // element={<Policestationtest />}
+          />
+          <Route
+            path="/policeStations-dashboard/station/:stationId"
+            element={<PoliceStation />}
           />
           <Route
             path="/StationOfficer-dashboard"
@@ -50,8 +56,7 @@ function App() {
             path="/emergency-station-assign-dashboard"
             element={<EmergencyStationAssignDashboard />}
           />
-          {/*this roue use for testing map component */}
-          <Route path="/map" element={<MapPage />} />
+
           <Route
             path="/policeOfficers-dashboard"
             element={<PoliceOfficerDashboard />}
