@@ -9,36 +9,42 @@ const MainDashboard = () => {
       <h1 className="text-3xl font-bold text-center mb-8">MAIN DASHBOARD</h1>
       <p className="text-sm text-center ">Welcome to the main dashboard!</p>
 
-      <div className="mt-8 flex flex-col gap-6 items-center justify-center">
+      <div className="grid grid-cols-1 lg:grid-cols-3 text-sm gap-2 font-black mt-12">
         <div
           onClick={() => navigate("/emergency-dashboard")}
-          className="cursor-pointer w-[50%] px-18 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600 hover:text-black"
+          className="bg-white border border-gray-900 rounded-md px-4 py-2 text-blue-500 text-start uppercase"
         >
-          <p className="text-2xl ">Emergency trigger Dashboard</p>
+          Emergency trigger Dashboard
         </div>
         <div
           onClick={() => navigate("/policeStations-dashboard")}
-          className="cursor-pointer w-[50%] px-18 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600 hover:text-black"
+          className="bg-white border border-gray-900 rounded-md px-4 py-2 text-blue-500 text-start uppercase"
         >
-          <p className="text-2xl ">Station-Wise Dashboard</p>
+          Station-Wise Dashboard
         </div>
         <div
           onClick={() => navigate("/emergency-station-assign-dashboard")}
-          className="cursor-pointer w-[50%] px-18 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600 hover:text-black"
+          className="bg-white border border-gray-900 rounded-md px-4 py-2 text-blue-500 text-start uppercase"
         >
-          <p className="text-2xl ">Emergency Station Assigning</p>
+          Emergency Station Assigning
         </div>
         <div
           onClick={() => navigate("/StationOfficer-dashboard")}
-          className="cursor-pointer w-[50%] px-18 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600 hover:text-black"
+          className="bg-white border border-gray-900 rounded-md px-4 py-2 text-blue-500 text-start uppercase"
         >
-          <p className="text-2xl ">Station Officer Assigning</p>
+          Station Officer Assigning
         </div>
         <div
           onClick={() => navigate("")}
-          className="cursor-pointer w-[50%] px-18 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600 hover:text-black"
+          className="bg-white border border-gray-900 rounded-md px-4 py-2 text-blue-500 text-start uppercase"
         >
-          <p className="text-2xl ">Case Status Update Window</p>
+          Case Status Update Window
+        </div>
+        <div
+          onClick={() => navigate("/policeOfficers-dashboard")}
+          className="bg-white border border-gray-900 rounded-md px-4 py-2 text-blue-500 text-start uppercase"
+        >
+          Officer wise dashboard
         </div>
       </div>
     </div>

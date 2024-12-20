@@ -40,6 +40,16 @@ export const EmergencyCenterPage = () => {
       return;
     }
 
+    // Show confirmation dialog with provisional message
+    const userConfirmed = window.confirm(
+      "This emergency request will be sent to Police Station Emergency Unit for immediate action. Are you sure you want to proceed?"
+    );
+
+    if (!userConfirmed) {
+      // If user cancels, do nothing and exit
+      return;
+    }
+
     try {
       // Wait for the location to be fetched
       const location = await getUserLocation();

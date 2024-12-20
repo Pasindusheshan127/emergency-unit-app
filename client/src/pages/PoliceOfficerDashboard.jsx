@@ -27,12 +27,12 @@ const PoliceOfficerDashboard = () => {
   return (
     <div className="p-6 bg-white text-black">
       <h1 className="text-3xl font-bold text-center mb-16">Police Officers</h1>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {policeOfficers.map((officer) => (
           <Link
             key={officer.id}
             to={`/policeOfficers-dashboard/officer/${officer.phone_number}`}
-            className="px-6 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600"
+            className="bg-white border border-gray-900 rounded-md px-4 py-2 text-blue-500 text-left uppercase"
           >
             {officer.name}
           </Link>

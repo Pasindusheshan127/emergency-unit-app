@@ -37,7 +37,7 @@ const PoliceStationDashboard = () => {
           <Link
             key={station.p_id}
             to={`/policeStations-dashboard/station/${station.p_id}`}
-            className="px-6 py-3 bg-blue-500 text-white text-center rounded-lg hover:bg-blue-600"
+            className="bg-white border border-gray-900 rounded-md px-4 py-2 text-blue-500 text-start uppercase"
           >
             {station.name}
           </Link>
