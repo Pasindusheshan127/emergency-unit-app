@@ -35,27 +35,32 @@ const PoliceOfficer = () => {
   }, []);
 
   useEffect(() => {
-    //Initialize the socket connection
+    //initialize the socket connection
     socket.current = io("http://localhost:5000");
 
-    //Listen to new 'assignOfficer' events
+    // Listen to new 'officerAssigned' events
     socket.current.on("officerAssigned", (data) => {
-      console.log("Officer assigned:", data.emergency);
-      console.log("before emergencies", emergencies);
       const newEmergency = data.emergency;
-      //check if the assigned officer matches thr current offerId
-      if (data.emergency.officer_id === officerId) {
-        //play beep sound
+
+      // Check if the assigned officer matches the current officerId
+      if (data.officer_id === officerId) {
+        // Play beep sound
         playBeep();
 
-        //update the emergencies array with the new assigned emergency
-        setEmergencies((prevEmergencies) => [...prevEmergencies, newEmergency]);
+        // Update the emergencies array with the new assigned emergency
+        setEmergencies((prevEmergencies) => {
+          const updatedEmergencies = [newEmergency, ...prevEmergencies];
+
+          return updatedEmergencies;
+        });
       }
-      console.log("aftter emergencies", emergencies);
     });
 
+    // Return cleanup function to disconnect from the socket server when unmounting
     return () => {
-      //clean up the conection on unmount
+      // Clean up the connection on unmount
+      socket.current.off("officerAssigned");
+      // Disconnect from the socket server when unmounting
       socket.current.disconnect();
     };
   }, [officerId]);

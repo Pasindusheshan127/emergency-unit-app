@@ -1,11 +1,13 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import io from "socket.io-client";
 const PoliceStation = () => {
   const { stationId } = useParams(); // Get stationId from the URL
   const [data, setData] = useState([]);
   const [selectedOfficerId, setSelectedOfficerId] = useState("");
+
+  const socket = useRef(null);
 
   const calculateElapsedTime = (updatedTime) => {
     const total = Date.parse(new Date()) - Date.parse(updatedTime);
@@ -13,6 +15,11 @@ const PoliceStation = () => {
     const minutes = Math.floor((total / 1000 / 60) % 60);
     const hours = Math.floor((total / 1000 / 60 / 60) % 24);
     return { total, hours, minutes, seconds };
+  };
+
+  const playBeep = () => {
+    const audio = new Audio("/level-up.mp3");
+    audio.play();
   };
 
   useEffect(() => {
@@ -38,6 +45,44 @@ const PoliceStation = () => {
 
     fetchData();
   }, [stationId]); // Dependency on stationId to refetch data when the station changes
+
+  useEffect(() => {
+    //initialize the socket connection
+    socket.current = io("http://localhost:5000");
+
+    //listen the new 'stationAssigned' events
+    socket.current.on("stationAssigned", (data) => {
+      console.log("Station assigned", data);
+
+      const newEmergency = data.assignment;
+
+      if (data.assignment.station_id === stationId) {
+        console.log("id:", data.assignment.station_id, "value :", newEmergency);
+      }
+
+      //check if the assigned station match the current officerId
+      if (data.assignment.station_id === stationId) {
+        // Play beep sound
+        playBeep();
+        console.log("id:", data.assignment.station_id, "value :", newEmergency);
+        //update the emergencies array with new assigned emergency
+
+        setData((prevData) => {
+          const updatedata = [newEmergency, ...prevData];
+
+          return updatedata;
+        });
+      }
+    });
+
+    //return cleanup functon to disconnect from the socket server when unmounting
+    return () => {
+      //remove the listener when unmounting the component
+      socket.current.off("stationAssigned");
+      //Disconnect from the socket server
+      socket.current.disconnect();
+    };
+  }, [stationId]); // Dependency on stationId to refetch data when the station])
 
   const handleAssignOfficer = async (id) => {
     if (!selectedOfficerId) {
