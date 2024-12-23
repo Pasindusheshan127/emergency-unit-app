@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { BellElectric, ChartBarBig, House, ShieldAlert } from "lucide-react";
 
 const MainDashboard = () => {
   const navigate = useNavigate();
@@ -8,6 +9,27 @@ const MainDashboard = () => {
     <div className="p-6 bg-white text-black">
       <h1 className="text-3xl font-bold text-center mb-8">MAIN DASHBOARD</h1>
       <p className="text-sm text-center ">Welcome to the main dashboard!</p>
+
+      <div className="flex gap-2 my-auto justify-center mt-10">
+        <div className="flex bg-white p-3 text-xl rounded-md text-black border border-black w-[48px] h-[48px]">
+          <ShieldAlert size={20} />
+        </div>
+        <div className="flex bg-white p-3 text-xl rounded-md text-black border border-black w-[48px] h-[48px]">
+          <House size={20} />
+        </div>
+        <div className="flex bg-white p-3 text-xl rounded-md text-black border border-black w-[48px] h-[48px]">
+          <BellElectric size={20} />
+        </div>
+        <div className="flex bg-white p-3 text-xl rounded-md text-black border border-black w-[48px] h-[48px]">
+          <img src="/icons/officer-assigning.svg" />
+        </div>
+        <div className="flex bg-white p-3 text-xl rounded-md text-black border border-black w-[48px] h-[48px]">
+          <ChartBarBig size={20} />
+        </div>
+        <div className="flex bg-white p-3 text-xl rounded-md text-black border border-black w-[48px] h-[48px]">
+          <img src="/icons/police-officer.svg" />
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 text-sm gap-2 font-black mt-12">
         <div
