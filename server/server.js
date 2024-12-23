@@ -12,6 +12,7 @@ const officerEmergenciesRoute = require("./routes/officerEmergencyRoutes");
 const googleMapUrlRoute = require("./routes/googleMapRoutes");
 const policeStationsRoutes = require("./routes/policeStationsRoutes");
 const policeofficersRoute = require("./routes/policeOfficersRoutes");
+const dutyAssignRoute = require("./routes/emergencyDutyAssignmentRoutes");
 
 const app = express();
 const server = http.createServer(app);
@@ -49,28 +50,7 @@ app.use("/api/officer-emergencies", officerEmergenciesRoute);
 app.use("/api/generate-map-url", googleMapUrlRoute);
 app.use("/api/police-stations", policeStationsRoutes);
 app.use("/api/police-officers", policeofficersRoute);
-
-// app.post("/generate-map-url", (req, res) => {
-//   const { xDirection, yDirection } = req.body;
-
-//   // Check for missing fields
-//   if (!xDirection || !yDirection) {
-//     return res.status(400).json({
-//       success: false,
-//       message:
-//         "Both xDirection (latitude) and yDirection (longitude) are required.",
-//     });
-//   }
-
-//   const baseUrl = "https://www.google.com/maps?q=";
-//   const mapUrl = `${baseUrl}${xDirection},${yDirection}`;
-
-//   return res.status(200).json({
-//     success: true,
-//     message: "Google Maps URL generated successfully.",
-//     mapUrl,
-//   });
-// });
+app.use("/api/duty-assign", dutyAssignRoute);
 
 // Handle Socket.io Connections
 io.on("connection", (socket) => {
