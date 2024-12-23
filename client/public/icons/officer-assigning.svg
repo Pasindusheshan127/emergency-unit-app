@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="300" fill="none">
   <!-- Cap -->
   <path d="M32 4c-12 0-20 6-20 6v6c0 2 3 4 8 5v3h24v-3c5-1 8-3 8-5V10s-8-6-20-6z" fill="none" stroke="#000" stroke-width="2"/>
   <path d="M32 5c-9.5 0-15.5 4.8-15.5 4.8L32 12l15.5-2.2S41.5 5 32 5z" fill="none" stroke="#000" stroke-width="2"/>
@@ -21,4 +21,7 @@
     <path d="M38 55h-4" stroke="#000" stroke-width="4"/> <!-- Increased stroke width -->
     <path d="M26 55h-4" stroke="#000" stroke-width="4"/> <!-- Increased stroke width -->
   </g>
+
+  <!-- Text -->
+  <text x="32" y="68" font-size="9" text-anchor="middle" fill="#000">EMERGENCY</text> <!-- Centered text below icon -->
 </svg>

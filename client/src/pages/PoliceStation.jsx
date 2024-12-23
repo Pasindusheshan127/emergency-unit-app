@@ -18,7 +18,7 @@ const PoliceStation = () => {
   };
 
   const playBeep = () => {
-    const audio = new Audio("/level-up.mp3");
+    const audio = new Audio("/alert.mp3");
     audio.play();
   };
 
@@ -52,19 +52,14 @@ const PoliceStation = () => {
 
     //listen the new 'stationAssigned' events
     socket.current.on("stationAssigned", (data) => {
-      console.log("Station assigned", data);
+      // console.log("Station assigned", data);
 
       const newEmergency = data.assignment;
 
-      if (data.assignment.station_id === stationId) {
-        console.log("id:", data.assignment.station_id, "value :", newEmergency);
-      }
-
       //check if the assigned station match the current officerId
-      if (data.assignment.station_id === stationId) {
+      if (parseInt(data.assignment.station_id) === parseInt(stationId)) {
         // Play beep sound
         playBeep();
-        console.log("id:", data.assignment.station_id, "value :", newEmergency);
         //update the emergencies array with new assigned emergency
 
         setData((prevData) => {

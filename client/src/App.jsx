@@ -22,7 +22,7 @@ function App() {
     });
 
     socket.on("stationAssigned", (data) => {
-      console.log("Station assigned:", data);
+      // console.log("Station assigned:", data);
     });
 
     socket.on("officerAssigned", (data) => {

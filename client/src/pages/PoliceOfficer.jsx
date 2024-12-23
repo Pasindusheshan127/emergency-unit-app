@@ -13,7 +13,7 @@ const PoliceOfficer = () => {
 
   // Function to play beep sound
   const playBeep = () => {
-    const audio = new Audio("/level-up.mp3");
+    const audio = new Audio("/alert.mp3");
     audio.play();
   };
 
@@ -43,10 +43,10 @@ const PoliceOfficer = () => {
       const newEmergency = data.emergency;
 
       // Check if the assigned officer matches the current officerId
+
       if (data.officer_id === officerId) {
         // Play beep sound
         playBeep();
-
         // Update the emergencies array with the new assigned emergency
         setEmergencies((prevEmergencies) => {
           const updatedEmergencies = [newEmergency, ...prevEmergencies];
