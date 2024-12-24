@@ -12,6 +12,7 @@ import PoliceOfficerDashboard from "./pages/PoliceOfficerDashboard";
 import PoliceStation from "./pages/PoliceStation";
 import PoliceOfficer from "./pages/PoliceOfficer";
 import MainDashboard from "./pages/MainDashboard";
+import DutyAssignments from "./pages/DutyAssignments";
 
 function App() {
   useEffect(() => {
@@ -66,6 +67,10 @@ function App() {
           <Route
             path="/policeOfficers-dashboard/officer/:officerId"
             element={<PoliceOfficer />}
+          />
+          <Route
+            path="/duty-assinments-dashboard"
+            element={<DutyAssignments />}
           />
         </Routes>
       </Router>
