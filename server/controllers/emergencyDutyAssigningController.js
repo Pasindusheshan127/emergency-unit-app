@@ -1,14 +1,7 @@
 const dbClient = require("../models/db");
 
 const newDutyAssign = async (req, res) => {
-  const {
-    officerId,
-    phone_number,
-    vehical,
-    location_latitude,
-    location_loggitude,
-    date,
-  } = req.body;
+  const { officerId, phone_number, vehical, date } = req.body;
 
   const assigned_by_user_id = "pol1234";
 
@@ -43,16 +36,14 @@ const newDutyAssign = async (req, res) => {
     }
 
     // Insert the new record into the duty_assignments table
-    const insertQuery = `INSERT INTO duty_assignments (officer_id, police_station, phone_number, vehical, location_latitude, location_loggitude, date, assigned_by_user_id)
-                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
+    const insertQuery = `INSERT INTO duty_assignments (officer_id, police_station, phone_number, vehical, date, assigned_by_user_id)
+                         VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
 
     const insertResult = await dbClient.query(insertQuery, [
       officerId,
       policeStationId,
       phone_number,
       vehical,
-      location_latitude,
-      location_loggitude,
       date,
       assigned_by_user_id,
     ]);
@@ -92,4 +83,19 @@ const getOfficers = async (req, res) => {
   }
 };
 
-module.exports = { newDutyAssign, getOfficers };
+//get all duty assignments
+const getAllAssignments = async (req, res) => {
+  try {
+    const getAllAssignmentsQuery = `SELECT * FROM duty_assignments`;
+    const result = await dbClient.query(getAllAssignmentsQuery);
+    res.status(200).json({
+      message: "All duty assignments found successfully.",
+      assignments: result.rows,
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "Server error." });
+  }
+};
+
+module.exports = { newDutyAssign, getOfficers, getAllAssignments };

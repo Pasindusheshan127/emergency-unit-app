@@ -1,15 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" fill="none" stroke="black" stroke-width="5">
   <!-- Cap -->
   <path d="M32 4c-12 0-20 6-20 6v6c0 2 3 4 8 5v3h24v-3c5-1 8-3 8-5V10s-8-6-20-6z" fill="#000"/>
-  <path d="M32 5c-9.5 0-15.5 4.8-15.5 4.8L32 12l15.5-2.2S41.5 5 32 5z" fill="#000"/>
+  <path d="M32 5c-9.5 0-15.5 4.8-15.5 4.8L32 12l15.5-2.2S41.5 5 32 5z" />
 
   <!-- Face -->
-  <circle cx="32" cy="28" r="10" fill="#000"/>
+  <circle cx="32" cy="28" r="10" />
 
   <!-- Uniform -->
-  <path d="M22 38c-4 0-8 8-8 12h36c0-4-4-12-8-12H22z" fill="#000"/>
-  <path d="M22 44l10-6 10 6v6H22v-6z" fill="#000"/>
+  <path d="M22 38c-4 0-8 8-8 12h36c0-4-4-12-8-12H22z" />
+  <path d="M22 44l10-6 10 6v6H22v-6z" />
 
   <!-- Badge -->
-  <path d="M32 38c-2 0-2.5 2-2.5 2s0.5 2 2.5 2 2.5-2 2.5-2-0.5-2-2.5-2z" fill="#000"/>
+  <path d="M32 38c-2 0-2.5 2-2.5 2s0.5 2 2.5 2 2.5-2 2.5-2-0.5-2-2.5-2z" />
 </svg>
